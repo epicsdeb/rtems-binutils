@@ -1,0 +1,13 @@
+Source: binutils-rtems4.9
+Section: unknown
+Priority: extra
+Maintainer: Michael Davidsaver <mdavidsaver@bnl.gov>
+Build-Depends: debhelper (>= 7), autotools-dev
+Standards-Version: 3.7.3
+Homepage: http://www.rtems.com
+
+Package: binutils-powerpc-rtems4.9
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Binutil for RTEMS powerpc targets
+ Cross tools for RTEMS OS on PowerPC.

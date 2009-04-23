@@ -1,6 +1,7 @@
 binutils-rtems4.9 (2.19-1) unstable; urgency=low
 
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * Initial release (Closes: #000)
+  * Vanilla binutils 2.19
 
  -- Michael Davidsaver <mdavidsaver@bnl.gov>  Wed, 15 Apr 2009 17:50:13 -0400
 

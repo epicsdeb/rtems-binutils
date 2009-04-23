@@ -1,17 +1,17 @@
 This package was debianized by Michael Davidsaver <mdavidsaver@bnl.gov> on
 Wed, 15 Apr 2009 17:50:13 -0400.
 
-It was downloaded from <url://example.com>
+It was downloaded from http://www.gnu.org/software/binutils/
 
 Upstream Author(s):
 
-    <put author's name and email here>
-    <likewise for another author>
+    bug-binutils@gnu.org
 
 Copyright:
 
-    <Copyright (C) YYYY Name OfAuthor>
-    <likewise for another author>
+    Copyright (C) 1998, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2008, 2009
+    Free Software Foundation, Inc.
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 
 License:
 
@@ -35,6 +35,3 @@ Public License can be found in `/usr/share/common-licenses/GPL'.
 The Debian packaging is (C) 2009, Michael Davidsaver <mdavidsaver@bnl.gov> and
 is licensed under the GPL, see above.
 
-
-# Please also look if there are files or directories which have a
-# different copyright/license attached and list them here.

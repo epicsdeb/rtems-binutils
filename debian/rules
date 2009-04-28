@@ -6,7 +6,6 @@
 
 ifeq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
 CFLAGS:=$(filter-out -g,$(CFLAGS))
-CXXFLAGS:=$(filter-out -g,$(CXXFLAGS))
 endif
 
 ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
@@ -30,8 +29,10 @@ ifneq "$(wildcard /usr/share/misc/config.guess)" ""
 	cp -f /usr/share/misc/config.guess config.guess
 endif
 	install -d build-powerpc
-	CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" \
-cd build-powerpc && ../configure $(CROSS) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info CFLAGS="$(CFLAGS)" LDFLAGS="-Wl,-z,defs" --disable-nls --with-system-zlib --without-included-gettext
+	cd build-powerpc && ../configure $(CROSS) --prefix=/usr \
+--mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info \
+--disable-nls --with-system-zlib --without-included-gettext \
+CFLAGS="$(CFLAGS)" LDFLAGS="-Wl,-z,defs"
 
 
 build: build-stamp

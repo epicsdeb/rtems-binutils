@@ -15,6 +15,12 @@ endif
 
 RTEMS_VER =4.9
 
+ifneq (,$(filter target=%,$(DEB_BUILD_OPTIONS)))
+TARGETS = $(patsubst target=%,%,$(filter target=%,$(DEB_BUILD_OPTIONS)))
+else
+TARGETS =powerpc i386
+endif
+
 # These are used for cross-compiling and for saving the configure script
 # from having to guess our platform (since we know it already)
 DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
@@ -26,28 +32,33 @@ CONFIG=--target $(call DEB_TARGET_GNU_TYPE,$(1)) --build $(DEB_BUILD_GNU_TYPE) -
 --disable-nls --with-system-zlib --without-included-gettext \
 CFLAGS="$(CFLAGS)" LDFLAGS="-Wl,-z,defs"
 
-config.status: configure
+config.sub:
 	dh_testdir
 ifneq "$(wildcard /usr/share/misc/config.sub)" ""
 	cp -f /usr/share/misc/config.sub config.sub
 endif
+
+config.guess:
+	dh_testdir
 ifneq "$(wildcard /usr/share/misc/config.guess)" ""
 	cp -f /usr/share/misc/config.guess config.guess
 endif
-	install -d build-powerpc
-	cd build-powerpc && ../configure $(call CONFIG,powerpc)
-	install -d build-i386
-	cd build-i386 && ../configure $(call CONFIG,i386)
 
+build-%/config.status: configure config.sub config.guess
+	echo "Configure: $(@:%-build/stamp=%)"
+	install -d build-$(@:build-%/config.status=%)
+	cd build-$(@:build-%/config.status=%) && ../configure $(call CONFIG,$(@:build-%/config.status=%))
+
+.SECONDARY: $(foreach t,$(TARGETS),build-$(t)/config.status)
 
 build: build-stamp
 
-build-stamp:  config.status 
+build-stamp:  $(foreach t,$(TARGETS),build-$(t)/stamp)
+
+build-%/stamp: build-%/config.status
 	dh_testdir
-
-	$(MAKE) -C build-powerpc $(MAKEFLAGS)
-	$(MAKE) -C build-i386 $(MAKEFLAGS)
-
+	echo "Build: $(@:build-%/stamp=%)"
+	$(MAKE) -C build-$(@:build-%/stamp=%) all
 	touch $@
 
 clean: 
@@ -55,29 +66,29 @@ clean:
 	dh_testroot
 	rm -f build-stamp 
 
-	rm -rf build-powerpc
-	rm -rf build-i386
+	rm -rf build-*
 	rm -f config.sub config.guess
 
 	dh_clean 
 
 tprefix=$(CURDIR)/debian/binutils-$(1)-rtems$(RTEMS_VER)/usr
 
-install: build
+install: build install-init $(foreach t,$(TARGETS),build-$(t)/inst-stamp)
+
+install-init:
 	dh_testdir
 	dh_testroot
 	dh_clean -k 
 	dh_installdirs
 
-	$(MAKE) -C build-powerpc prefix=$(call tprefix,powerpc) install
+build-%/inst-stamp:
+	echo "Install: $(@:%-build/stamp=%)"
+	$(MAKE) -C build-$(@:build-%/inst-stamp=%) prefix=$(call tprefix,$(@:build-%/inst-stamp=%)) install
 
-	rm -rf $(call tprefix,powerpc)/lib
-	rm -rf $(call tprefix,powerpc)/share/info
+	rm -rf $(call tprefix,$(@:build-%/inst-stamp=%))/lib
+	rm -rf $(call tprefix,$(@:build-%/inst-stamp=%))/share/info
 
-	$(MAKE) -C build-i386 prefix=$(call tprefix,i386) install
-
-	rm -rf $(call tprefix,i386)/lib
-	rm -rf $(call tprefix,i386)/share/info
+	touch $@
 
 
 binary-indep: build install

@@ -1,3 +1,9 @@
+binutils-rtems4.9 (2.19.1-2) unstable; urgency=low
+
+  * Apply changes from 2.19-2
+
+ -- Michael Davidsaver <mdavidsaver@bnl.gov>  Thu, 28 Jan 2010 22:32:25 -0500
+
 binutils-rtems4.9 (2.19.1-1) unstable; urgency=low
 
   * Update to 2.19.1

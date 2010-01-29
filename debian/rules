@@ -18,7 +18,7 @@ RTEMS_VER =4.9
 ifneq (,$(filter target=%,$(DEB_BUILD_OPTIONS)))
 TARGETS = $(patsubst target=%,%,$(filter target=%,$(DEB_BUILD_OPTIONS)))
 else
-TARGETS =powerpc i386
+TARGETS =arm powerpc i386
 endif
 
 # These are used for cross-compiling and for saving the configure script

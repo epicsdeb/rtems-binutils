@@ -13,6 +13,13 @@ Description: Binutil for RTEMS i386 targets
  Cross assembler and linker for i386 and is intended for
  the RTEMS realtime operating system.
 
+Package: binutils-arm-rtems4.9
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Binutil for RTEMS ARM targets
+ Cross assembler and linker for ARM and is intended for
+ the RTEMS realtime operating system.
+
 Package: binutils-powerpc-rtems4.9
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}

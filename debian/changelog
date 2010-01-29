@@ -1,6 +1,12 @@
+binutils-rtems4.9 (2.19-2) unstable; urgency=low
+
+  * Build ARM tools
+
+ -- Michael Davidsaver <mdavidsaver@bnl.gov>  Thu, 28 Jan 2010 19:48:03 -0500
+
 binutils-rtems4.9 (2.19-1) unstable; urgency=low
 
-  * Initial release (Closes: #000)
+  * Initial release
   * Vanilla binutils 2.19
 
  -- Michael Davidsaver <mdavidsaver@bnl.gov>  Wed, 15 Apr 2009 17:50:13 -0400

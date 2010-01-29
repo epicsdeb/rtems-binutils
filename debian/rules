@@ -10,7 +10,7 @@ endif
 
 ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
 NUMJOBS = $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
-MAKEFLAGS += -j$(NUMJOBS)
+BMAKEFLAGS += -j$(NUMJOBS)
 endif
 
 RTEMS_VER =4.9
@@ -58,7 +58,7 @@ build-stamp:  $(foreach t,$(TARGETS),build-$(t)/stamp)
 build-%/stamp: build-%/config.status
 	dh_testdir
 	echo "Build: $(@:build-%/stamp=%)"
-	$(MAKE) -C build-$(@:build-%/stamp=%) all
+	$(MAKE) $(BMAKEFLAGS) -C build-$(@:build-%/stamp=%) all
 	touch $@
 
 clean: 

@@ -1,4 +1,4 @@
-Source: binutils-rtems4.9
+Source: binutils-rtems4.10
 Section: devel
 Priority: extra
 Maintainer: Michael Davidsaver <mdavidsaver@bnl.gov>
@@ -6,21 +6,21 @@ Build-Depends: debhelper (>= 7), autotools-dev, texinfo
 Standards-Version: 3.8.0
 Homepage: http://www.gnu.org/software/binutils/
 
-Package: binutils-i386-rtems4.9
+Package: binutils-i386-rtems4.10
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Binutil for RTEMS i386 targets
  Cross assembler and linker for i386 and is intended for
  the RTEMS realtime operating system.
 
-Package: binutils-arm-rtems4.9
+Package: binutils-arm-rtems4.10
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Binutil for RTEMS ARM targets
  Cross assembler and linker for ARM and is intended for
  the RTEMS realtime operating system.
 
-Package: binutils-powerpc-rtems4.9
+Package: binutils-powerpc-rtems4.10
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Binutil for RTEMS powerpc targets

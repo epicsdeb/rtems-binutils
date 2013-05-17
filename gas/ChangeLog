@@ -1,3 +1,9 @@
+2010-03-30  H.J. Lu  <hongjiu.lu@intel.com>
+
+	PR gas/11456
+	* input-scrub.c (input_scrub_next_buffer): Use memmove instead
+	of memcpy to copy overlap memory.
+
 2009-01-14  Jakub Jelinek  <jakub@redhat.com>
 
 	* Makefile.am (ehopt.o): Add struc-symbol.h.

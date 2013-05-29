@@ -1,3 +1,9 @@
+binutils-rtems4.9 (2.19.1-5) unstable; urgency=low
+
+  * adding build rules for target m68k (needed by HZB)
+
+ -- Joachim Rahn <Joachim.Rahn@helmholtz-berlin.de>  Wed, 29 May 2013 12:55:34 +0200
+
 binutils-rtems4.9 (2.19.1-4) unstable; urgency=low
 
   * fix PR gas/11456

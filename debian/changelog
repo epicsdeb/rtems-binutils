@@ -1,3 +1,9 @@
+binutils-rtems4.9 (2.19.1-6) unstable; urgency=low
+
+  * using gcc-4.4 to build binutils-rtems4.9 on all linux versions without complain
+
+ -- Joachim Rahn <Joachim.Rahn@helmholtz-berlin.de>  Thu, 30 May 2013 10:27:55 +0200
+
 binutils-rtems4.9 (2.19.1-5) unstable; urgency=low
 
   * adding build rules for target m68k (needed by HZB)

@@ -1,0 +1,116 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+ifeq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
+CFLAGS:=$(filter-out -g,$(CFLAGS))
+endif
+
+ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+NUMJOBS = $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+BMAKEFLAGS += -j$(NUMJOBS)
+endif
+
+RTEMS_VER =4.11
+
+ifneq (,$(filter target=%,$(DEB_BUILD_OPTIONS)))
+TARGETS = $(patsubst target=%,%,$(filter target=%,$(DEB_BUILD_OPTIONS)))
+else
+TARGETS =arm powerpc i386
+endif
+
+# These are used for cross-compiling and for saving the configure script
+# from having to guess our platform (since we know it already)
+DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+DEB_TARGET_GNU_TYPE = $(1)-rtems$(RTEMS_VER)
+
+CONFIG=--target $(call DEB_TARGET_GNU_TYPE,$(1)) --build $(DEB_BUILD_GNU_TYPE) --host $(DEB_HOST_GNU_TYPE) \
+ --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info \
+--disable-nls --with-system-zlib --without-included-gettext \
+CFLAGS="$(CFLAGS)" LDFLAGS="-Wl,-z,defs"
+
+config.sub:
+	dh_testdir
+ifneq "$(wildcard /usr/share/misc/config.sub)" ""
+	cp -f /usr/share/misc/config.sub config.sub
+endif
+
+config.guess:
+	dh_testdir
+ifneq "$(wildcard /usr/share/misc/config.guess)" ""
+	cp -f /usr/share/misc/config.guess config.guess
+endif
+
+build-%/config.status: configure config.sub config.guess
+	echo "Configure: $(@:%-build/stamp=%)"
+	install -d build-$(@:build-%/config.status=%)
+	cd build-$(@:build-%/config.status=%) && ../configure $(call CONFIG,$(@:build-%/config.status=%))
+
+.SECONDARY: $(foreach t,$(TARGETS),build-$(t)/config.status)
+
+build: build-stamp
+
+build-stamp:  $(foreach t,$(TARGETS),build-$(t)/stamp)
+
+build-%/stamp: build-%/config.status
+	dh_testdir
+	echo "Build: $(@:build-%/stamp=%)"
+	$(MAKE) $(BMAKEFLAGS) -C build-$(@:build-%/stamp=%) all
+	touch $@
+
+clean: 
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp 
+
+	rm -rf build-*
+	rm -f config.sub config.guess
+
+	dh_clean 
+
+tprefix=$(CURDIR)/debian/binutils-$(1)-rtems$(RTEMS_VER)/usr
+
+install: build install-init $(foreach t,$(TARGETS),build-$(t)/inst-stamp)
+
+install-init:
+	dh_testdir
+	dh_testroot
+	dh_clean -k 
+	dh_installdirs
+
+build-%/inst-stamp:
+	echo "Install: $(@:%-build/stamp=%)"
+	$(MAKE) -C build-$(@:build-%/inst-stamp=%) prefix=$(call tprefix,$(@:build-%/inst-stamp=%)) install
+
+	rm -rf $(call tprefix,$(@:build-%/inst-stamp=%))/lib
+	rm -rf $(call tprefix,$(@:build-%/inst-stamp=%))/share/info
+
+	touch $@
+
+
+binary-indep: build install
+# We have nothing to do by default.
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs ChangeLog
+	dh_installdocs
+	dh_installexamples
+	dh_installman
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+#	dh_makeshlibs
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install 

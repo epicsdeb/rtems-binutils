@@ -1,3 +1,9 @@
+binutils-rtems4.11 (2.24-1) unstable; urgency=low
+
+  * New version
+
+ -- Michael Davidsaver <mdavidsaver@bnl.gov>  Tue, 29 Jul 2014 14:45:06 -0400
+
 binutils-rtems4.10 (2.20.1-2) unstable; urgency=low
 
   * RTEMS 4.10 patch 20130320

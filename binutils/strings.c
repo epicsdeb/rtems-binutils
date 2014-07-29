@@ -65,7 +65,6 @@
 #include "getopt.h"
 #include "libiberty.h"
 #include "safe-ctype.h"
-#include <sys/stat.h>
 #include "bucomm.h"
 
 #define STRING_ISGRAPHIC(c) \

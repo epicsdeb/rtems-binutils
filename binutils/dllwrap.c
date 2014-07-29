@@ -20,13 +20,6 @@
    Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA
    02110-1301, USA.  */
 
-/* AIX requires this to be the first thing in the file.  */
-#ifndef __GNUC__
-# ifdef _AIX
- #pragma alloca
-#endif
-#endif
-
 #include "sysdep.h"
 #include "bfd.h"
 #include "libiberty.h"
@@ -35,7 +28,6 @@
 #include "bucomm.h"
 
 #include <time.h>
-#include <sys/stat.h>
 
 #ifdef HAVE_SYS_WAIT_H
 #include <sys/wait.h>

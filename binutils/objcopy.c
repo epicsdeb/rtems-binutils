@@ -30,7 +30,6 @@
 #include "filenames.h"
 #include "fnmatch.h"
 #include "elf-bfd.h"
-#include <sys/stat.h>
 #include "libbfd.h"
 #include "coff/internal.h"
 #include "libcoff.h"

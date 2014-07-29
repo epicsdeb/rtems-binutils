@@ -69,8 +69,6 @@
 #include <sys/mman.h>
 #endif
 
-#include <sys/stat.h>
-
 /* Internal headers for the ELF .stab-dump code - sorry.  */
 #define	BYTES_IN_WORD	32
 #include "aout/aout64.h"

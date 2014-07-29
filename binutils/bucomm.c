@@ -29,7 +29,6 @@
 #include "filenames.h"
 #include "libbfd.h"
 
-#include <sys/stat.h>
 #include <time.h>		/* ctime, maybe time_t */
 #include <assert.h>
 #include "bucomm.h"

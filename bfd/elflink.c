@@ -4154,8 +4154,7 @@ error_free_dyn:
 	h = (struct elf_link_hash_entry *) h->root.u.i.link;
 
       *sym_hash = h;
-      if (is_elf_hash_table (htab))
-	h->unique_global = (flags & BSF_GNU_UNIQUE) != 0;
+      h->unique_global = (flags & BSF_GNU_UNIQUE) != 0;
 
       new_weakdef = FALSE;
       if (dynamic

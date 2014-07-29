@@ -1,7 +1,3 @@
-2013-01-07  Patrice Dumas  <pertusus@free.fr>
-
-	* bfd.texinfo: Replace @ with @@ when it is part of the text.
-
 2009-08-29  Martin Thuresson  <martin@mtme.org>
 
 	* chew.c (newentry, add_intrinsic): Rename variable new to

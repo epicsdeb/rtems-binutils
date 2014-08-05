@@ -2,15 +2,12 @@
 # -*- makefile -*-
 
 # Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
+export DH_VERBOSE=1
+
+#eg. DEB_BUILD_OPTIONS=parallel=8
 
 ifeq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
 CFLAGS:=$(filter-out -g,$(CFLAGS))
-endif
-
-ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
-NUMJOBS = $(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
-BMAKEFLAGS += -j$(NUMJOBS)
 endif
 
 RTEMS_VER =4.11
@@ -21,96 +18,65 @@ else
 TARGETS =arm m68k powerpc i386
 endif
 
+prefix=/usr
+exec_prefix=$(prefix)
+bindir=$(exec_prefix)/bin
+datarootdir=$(prefix)/share
+datadir=$(datarootdir)
+mandir=$(datarootdir)/man
+infodir=$(datarootdir)/info
+localedir=$(datarootdir)/locale
+libexecdir=$(exec_prefix)/libexec
+libdir=$(exec_prefix)/lib
+
+
 # These are used for cross-compiling and for saving the configure script
 # from having to guess our platform (since we know it already)
 DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
-DEB_TARGET_GNU_TYPE = $(1)-rtems$(RTEMS_VER)
 
-CONFIG=--target $(call DEB_TARGET_GNU_TYPE,$(1)) --build $(DEB_BUILD_GNU_TYPE) --host $(DEB_HOST_GNU_TYPE) \
- --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info \
---disable-nls --with-system-zlib --without-included-gettext \
-CFLAGS="$(CFLAGS)" LDFLAGS="-Wl,-z,defs"
+# Called as a function.
+# $(1) is the architecture (eg. "powerpc")
+CONFIG=dh_auto_configure -B$$PWD/build-$(1) -- \
+ --target $(1)-rtems$(RTEMS_VER) --build $(DEB_BUILD_GNU_TYPE) --host $(DEB_HOST_GNU_TYPE) \
+ --prefix=$(prefix) --datadir=$(datadir) --libexecdir=$(libexecdir) --infodir=$(infodir) \
+ --disable-nls --disable-werror --with-system-zlib --without-included-gettext \
+ CFLAGS="$(CFLAGS)" LDFLAGS="-Wl,-z,defs"
 
-config.sub:
-	dh_testdir
-ifneq "$(wildcard /usr/share/misc/config.sub)" ""
-	cp -f /usr/share/misc/config.sub config.sub
-endif
-
-config.guess:
-	dh_testdir
-ifneq "$(wildcard /usr/share/misc/config.guess)" ""
-	cp -f /usr/share/misc/config.guess config.guess
-endif
-
-build-%/config.status: configure config.sub config.guess
-	echo "Configure: $(@:%-build/stamp=%)"
-	install -d build-$(@:build-%/config.status=%)
-	cd build-$(@:build-%/config.status=%) && ../configure $(call CONFIG,$(@:build-%/config.status=%))
-
-.SECONDARY: $(foreach t,$(TARGETS),build-$(t)/config.status)
-
-build: build-stamp
-
-build-stamp:  $(foreach t,$(TARGETS),build-$(t)/stamp)
-
-build-%/stamp: build-%/config.status
-	dh_testdir
-	echo "Build: $(@:build-%/stamp=%)"
-	$(MAKE) $(BMAKEFLAGS) -C build-$(@:build-%/stamp=%) all
-	touch $@
-
-clean: 
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp 
-
+override_dh_auto_clean:
 	rm -rf build-*
 	rm -f config.sub config.guess
+	rm -f debian/binutils-*-rtems$(RTEMS_VER).install
 
-	dh_clean 
+override_dh_auto_test:
 
-tprefix=$(CURDIR)/debian/binutils-$(1)-rtems$(RTEMS_VER)/usr
+override_dh_auto_configure: config.sub config.guess $(TARGETS:%=x_configure_%)
 
-install: build install-init $(foreach t,$(TARGETS),build-$(t)/inst-stamp)
+config.%: /usr/share/misc/config.%
+	cp -f $< $@
 
-install-init:
-	dh_testdir
-	dh_testroot
-	dh_clean -k 
-	dh_installdirs
+x_configure_%:
+	$(call CONFIG,$*)
 
-build-%/inst-stamp:
-	echo "Install: $(@:%-build/stamp=%)"
-	$(MAKE) -C build-$(@:build-%/inst-stamp=%) prefix=$(call tprefix,$(@:build-%/inst-stamp=%)) install
+override_dh_auto_build: # no-op see below
 
-	rm -rf $(call tprefix,$(@:build-%/inst-stamp=%))/lib
-	rm -rf $(call tprefix,$(@:build-%/inst-stamp=%))/share/info
+override_dh_auto_install: $(TARGETS:%=x_install_%)
+	rm -f debian/tmp/$(libdir)/libiberty*
+	rm -rf debian/tmp$(infodir)
 
-	touch $@
+x_install_%:
+	# abuse the install action to do the build as well
+	# this means the build host only needs space
+	# to build a single target.
+	dh_auto_build -B$$PWD/build-$*
+	dh_auto_install -B$$PWD/build-$*
+	dh_auto_clean -B$$PWD/build-$*
 
+override_dh_install: $(TARGETS:%=debian/binutils-%-rtems$(RTEMS_VER).install)
+	dh_install --fail-missing
 
-binary-indep: build install
-# We have nothing to do by default.
+debian/binutils-%-rtems$(RTEMS_VER).install: debian/binutils.install.in
+	sed -e 's|@prefix@|$(prefix)|g' -e 's|@version@|$(RTEMS_VER)|g' -e 's|@arch@|$*|g' debian/binutils.install.in > $@
 
-binary-arch: build install
-	dh_testdir
-	dh_testroot
-	dh_installchangelogs ChangeLog
-	dh_installdocs
-	dh_installexamples
-	dh_installman
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-#	dh_makeshlibs
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install 
+%:
+	dh --parallel $@

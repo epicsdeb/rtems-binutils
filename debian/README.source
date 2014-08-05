@@ -1,0 +1,11 @@
+To build for a different set of target architectures.
+
+1) Edit debian/rules and change the TARGETS variable
+
+2) run "fakeroot debian/rules debian/control" which regenerates the control file.
+
+3) Add a new entry to debian/changelog and increment the version number
+
+4.a) To feed pbuilder run "git-buildpackage --git-ignore-new -S -sa"
+
+4.b) For a local build "git-buildpackage --git-ignore-new -b -us -uc"

@@ -35,14 +35,6 @@ libdir=$(exec_prefix)/lib
 DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 
-# Called as a function.
-# $(1) is the architecture (eg. "powerpc")
-CONFIG=dh_auto_configure -B$$PWD/build-$(1) -- \
- --target $(1)-rtems$(RTEMS_VER) --build $(DEB_BUILD_GNU_TYPE) --host $(DEB_HOST_GNU_TYPE) \
- --prefix=$(prefix) --datadir=$(datadir) --libexecdir=$(libexecdir) --infodir=$(infodir) \
- --disable-nls --disable-werror --with-system-zlib --without-included-gettext \
- CFLAGS="$(CFLAGS)" LDFLAGS="-Wl,-z,defs"
-
 override_dh_auto_clean:
 	rm -rf build-*
 	rm -f config.sub config.guess
@@ -56,7 +48,11 @@ config.%: /usr/share/misc/config.%
 	cp -f $< $@
 
 x_configure_%:
-	$(call CONFIG,$*)
+	dh_auto_configure -B$$PWD/build-$* -- \
+ --target $*-rtems$(RTEMS_VER) --build $(DEB_BUILD_GNU_TYPE) --host $(DEB_HOST_GNU_TYPE) \
+ --prefix=$(prefix) --datadir=$(datadir) --libexecdir=$(libexecdir) --infodir=$(infodir) \
+ --disable-nls --disable-werror --with-system-zlib --without-included-gettext \
+ CFLAGS="$(CFLAGS)" LDFLAGS="-Wl,-z,defs"
 
 override_dh_auto_build: # no-op see below
 
@@ -81,7 +77,7 @@ debian/binutils-%-rtems$(RTEMS_VER).install: debian/binutils.install.in
 %:
 	dh --parallel $@
 
-# this rule is not run as part of a normal build.
+# this rule is *not* part of a normal build.
 # invoke it manually ("make -f debian/rules debian/control")
 # to re-generate the control file after changing the TARGETS list
 debian/control: debian/control.prefix.in debian/control.arch.in debian/rules

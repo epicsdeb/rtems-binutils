@@ -16,8 +16,8 @@ Description: Binutil for RTEMS i386 targets
 Package: binutils-arm-rtems4.11
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Binutil for RTEMS ARM targets
- Cross assembler and linker for ARM and is intended for
+Description: Binutil for RTEMS arm targets
+ Cross assembler and linker for arm and is intended for
  the RTEMS realtime operating system.
 
 Package: binutils-powerpc-rtems4.11
@@ -27,9 +27,10 @@ Description: Binutil for RTEMS powerpc targets
  Cross assembler and linker for powerpc and is intended for
  the RTEMS realtime operating system.
 
-Package: binutils-m68k-rtems4.9
+Package: binutils-m68k-rtems4.11
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Binutil for RTEMS powerpc targets
+Description: Binutil for RTEMS m68k targets
  Cross assembler and linker for m68k and is intended for
  the RTEMS realtime operating system.
+

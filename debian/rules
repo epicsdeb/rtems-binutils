@@ -15,7 +15,7 @@ RTEMS_VER =4.9
 ifneq (,$(filter target=%,$(DEB_BUILD_OPTIONS)))
 TARGETS = $(patsubst target=%,%,$(filter target=%,$(DEB_BUILD_OPTIONS)))
 else
-TARGETS =arm m68k powerpc i386
+TARGETS = i386 arm powerpc m68k
 endif
 
 prefix=/usr
@@ -80,3 +80,10 @@ debian/binutils-%-rtems$(RTEMS_VER).install: debian/binutils.install.in
 
 %:
 	dh --parallel $@
+
+# this rule is not run as part of a normal build.
+# invoke it manually ("make -f debian/rules debian/control")
+# to re-generate the control file after changing the TARGETS list
+debian/control: debian/control.prefix.in debian/control.arch.in debian/rules
+	sed -e 's|@version@|$(RTEMS_VER)|g' debian/control.prefix.in > $@
+	for arch in $(TARGETS); do sed -e 's|@version@|$(RTEMS_VER)|g' -e "s|@arch@|$$arch|g" debian/control.arch.in >> $@; done

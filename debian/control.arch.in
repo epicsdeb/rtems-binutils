@@ -1,0 +1,7 @@
+Package: binutils-@arch@-rtems@version@
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Binutil for RTEMS @arch@ targets
+ Cross assembler and linker for @arch@ and is intended for
+ the RTEMS realtime operating system.
+

@@ -1,0 +1,4 @@
+@prefix@/bin/@arch@-rtems@version@-*
+@prefix@/@arch@-rtems@version@/bin
+@prefix@/@arch@-rtems@version@/lib/ldscripts
+@prefix@/share/man/man1/@arch@-rtems@version@-*

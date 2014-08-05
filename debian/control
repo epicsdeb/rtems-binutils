@@ -26,3 +26,10 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Binutil for RTEMS powerpc targets
  Cross assembler and linker for powerpc and is intended for
  the RTEMS realtime operating system.
+
+Package: binutils-m68k-rtems4.9
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Binutil for RTEMS powerpc targets
+ Cross assembler and linker for m68k and is intended for
+ the RTEMS realtime operating system.

@@ -1,3 +1,9 @@
+binutils-rtems4.11 (2.24-2) unstable; urgency=low
+
+  * Add m68k
+
+ -- Michael Davidsaver <mdavidsaver@bnl.gov>  Tue, 05 Aug 2014 15:27:55 -0400
+
 binutils-rtems4.11 (2.24-1) unstable; urgency=low
 
   * New version

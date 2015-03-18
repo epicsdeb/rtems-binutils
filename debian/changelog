@@ -2,7 +2,7 @@ binutils-rtems4.9 (2.19.1-6+zjessie+1) jessie; urgency=low
 
   * revert last commit to make it compile on gcc that is available on debian 8 (jessie)
 
- -- Leon Flaks <flaks@bnl.gov>  Wed, 18 Mar 2015 11:27: -0400
+ -- Leon Flaks <flaks@bnl.gov>  Wed, 18 Mar 2015 11:27:00 -0400
 
 binutils-rtems4.9 (2.19.1-5) unstable; urgency=low
 

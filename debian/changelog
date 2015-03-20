@@ -1,10 +1,16 @@
+binutils-rtems4.9 (2.19.1-7) unstable; urgency=low
+
+  * Build for wheezy (unstable)
+
+ -- Leon Flaks <flaks@bnl.gov>  Fri, 20 Mar 2015 09:58:00 -0400
+
 binutils-rtems4.9 (2.19.1-7+zjessie+1) jessie; urgency=low
 
   * remove Werror flag 
 
  -- Leon Flaks <flaks@bnl.gov>  Wed, 18 Mar 2015 14:26:00 -0400
 
-bbinutils-rtems4.9 (2.19.1-6+zjessie+1) jessie; urgency=low
+binutils-rtems4.9 (2.19.1-6+zjessie+1) jessie; urgency=low
 
   * revert last commit to make it compile on gcc that is available on debian 8 (jessie)
 

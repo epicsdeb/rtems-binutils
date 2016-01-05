@@ -91,10 +91,10 @@ CXX_FOR_TARGET = ` \
   fi`
 
 noinst_PROGRAMS = ld-new
-info_TEXINFOS = ld.texinfo
+info_TEXINFOS =
 ld_TEXINFOS = configdoc.texi
-noinst_TEXINFOS = ldint.texinfo
-man_MANS = ld.1
+noinst_TEXINFOS =
+man_MANS = 
 
 AM_MAKEINFOFLAGS = -I $(srcdir) -I $(BFDDIR)/doc -I ../bfd/doc \
 		   -I $(top_srcdir)/../libiberty
@@ -1916,8 +1916,8 @@ install-data-local: install-info
 # target is run by the taz target in ../Makefile.in.
 EXTRA_DIST = ldgram.c ldgram.h ldlex.c emultempl/spu_ovl.o_c \
            deffilep.c deffilep.h $(man_MANS)
-diststuff: info $(EXTRA_DIST)
-all: info ld.1
+diststuff: $(EXTRA_DIST)
+all:
 
 # Both info (ld.info) and ld.1 depend on configdoc.texi.
 # But info isn't a direct target. Make info-recursive to depend on

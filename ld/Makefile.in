@@ -42,7 +42,7 @@ noinst_PROGRAMS = ld-new$(EXEEXT)
 # Automake 1.9 will only build info files in the objdir if they are
 # mentioned in DISTCLEANFILES.  It doesn't have to be unconditional,
 # though, so we use a bogus condition.
-@GENINSRC_NEVER_TRUE@am__append_1 = ld.info
+@GENINSRC_NEVER_TRUE@am__append_1 = 
 DIST_COMMON = $(srcdir)/../config.guess $(srcdir)/../config.sub NEWS \
 	README ChangeLog $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/configure $(am__configure_deps) \
@@ -102,23 +102,23 @@ LTYACCCOMPILE = $(LIBTOOL) --mode=compile $(YACC) $(YFLAGS) \
 	$(AM_YFLAGS)
 YLWRAP = $(top_srcdir)/../ylwrap
 SOURCES = $(ld_new_SOURCES) $(EXTRA_ld_new_SOURCES)
-INFO_DEPS = ld.info
-TEXINFO_TEX = $(top_srcdir)/../texinfo/texinfo.tex
+INFO_DEPS = 
+TEXINFO_TEX = 
 am__TEXINFO_TEX_DIR = $(top_srcdir)/../texinfo
-DVIS = ld.dvi
-PDFS = ld.pdf
-PSS = ld.ps
-HTMLS = ld.html
-TEXINFOS = ld.texinfo
+DVIS = 
+PDFS = 
+PSS = 
+HTMLS = 
+TEXINFOS = 
 TEXI2PDF = $(TEXI2DVI) --pdf --batch
 MAKEINFOHTML = $(MAKEINFO) --html
 AM_MAKEINFOHTMLFLAGS = $(AM_MAKEINFOFLAGS)
 DVIPS = dvips
 RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
-	html-recursive info-recursive install-data-recursive \
-	install-exec-recursive install-info-recursive \
+	html-recursive install-data-recursive \
+	install-exec-recursive \
 	install-recursive installcheck-recursive installdirs-recursive \
-	pdf-recursive ps-recursive uninstall-info-recursive \
+	pdf-recursive ps-recursive \
 	uninstall-recursive
 man1dir = $(mandir)/man1
 am__installdirs = "$(DESTDIR)$(man1dir)"
@@ -343,10 +343,10 @@ CXX_FOR_TARGET = ` \
     fi; \
   fi`
 
-info_TEXINFOS = ld.texinfo
-ld_TEXINFOS = configdoc.texi
-noinst_TEXINFOS = ldint.texinfo
-man_MANS = ld.1
+info_TEXINFOS = 
+ld_TEXINFOS = 
+noinst_TEXINFOS = 
+man_MANS = 
 AM_MAKEINFOFLAGS = -I $(srcdir) -I $(BFDDIR)/doc -I ../bfd/doc \
 		   -I $(top_srcdir)/../libiberty
 
@@ -1202,15 +1202,15 @@ html: html-recursive
 
 html-am: $(HTMLS)
 
-info: info-recursive
+info:
 
-info-am: $(INFO_DEPS)
+info-am:
 
 install-data-am: install-data-local install-man
 
 install-exec-am: install-exec-local
 
-install-info: install-info-recursive
+install-info:
 
 install-info-am: $(INFO_DEPS)
 	@$(NORMAL_INSTALL)

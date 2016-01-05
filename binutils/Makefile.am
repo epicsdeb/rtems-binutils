@@ -3,7 +3,7 @@
 AUTOMAKE_OPTIONS = cygnus dejagnu
 ACLOCAL_AMFLAGS = -I .. -I ../config -I ../bfd
 
-SUBDIRS = doc po
+SUBDIRS = po
 
 tooldir = $(exec_prefix)/$(target_alias)
 

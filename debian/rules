@@ -1,14 +1,14 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
+DEB_CFLAGS_MAINT_STRIP=-Werror=format-security
+include /usr/share/dpkg/buildflags.mk
+LDFLAGS += -Wl,-z,defs
+
 # Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
 
 #eg. DEB_BUILD_OPTIONS=parallel=8
-
-ifeq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
-CFLAGS:=$(filter-out -g,$(CFLAGS))
-endif
 
 RTEMS_VER =4.9
 
@@ -53,12 +53,12 @@ x_configure_%:
  --target $*-rtems$(RTEMS_VER) --build $(DEB_BUILD_GNU_TYPE) --host $(DEB_HOST_GNU_TYPE) \
  --prefix=$(prefix) --datadir=$(datadir) --libexecdir=$(libexecdir) --infodir=$(infodir) \
  --disable-nls --disable-werror --with-system-zlib --without-included-gettext \
- CFLAGS="$(CFLAGS)" LDFLAGS="-Wl,-z,defs"
+ CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)"
 
 override_dh_auto_build: # no-op see below
 
 override_dh_auto_install: $(TARGETS:%=x_install_%)
-	rm -f debian/tmp/$(libdir)/libiberty*
+	find debian/tmp/$(libdir) -name libiberty.a -delete
 	rm -rf debian/tmp$(infodir)
 
 x_install_%:
@@ -80,7 +80,7 @@ debian/binutils-%-rtems$(RTEMS_VER).lintian-overrides: debian/binutils.lintian-o
 	sed -e "s|@arch@|$*|g" -e 's|@prefix@|$(prefix)|g' -e 's|@version@|$(RTEMS_VER)|g' -e 's|@arch@|$*|g' $< > $@
 
 %:
-	dh --parallel $@
+	dh "$@"
 
 # this rule is *not* part of a normal build.
 # invoke it manually ("make -f debian/rules debian/control")

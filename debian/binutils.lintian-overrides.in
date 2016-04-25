@@ -1,0 +1,5 @@
+# cross toolchains should live under /usr/@arch@-rtems@ver@
+binutils-@arch@-rtems@version@: non-standard-dir-in-usr
+binutils-@arch@-rtems@version@: file-in-unusual-dir
+# Lazy
+binutils-@arch@-rtems@version@: binary-without-manpage

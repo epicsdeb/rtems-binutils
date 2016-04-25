@@ -39,6 +39,7 @@ override_dh_auto_clean:
 	rm -rf build-*
 	rm -f config.sub config.guess
 	rm -f debian/binutils-*-rtems$(RTEMS_VER).install
+	rm -f debian/binutils-*-rtems$(RTEMS_VER).lintian-overrides
 
 override_dh_auto_test:
 
@@ -68,11 +69,15 @@ x_install_%:
 	dh_auto_install -B$$PWD/build-$*
 	dh_auto_clean -B$$PWD/build-$*
 
+override_dh_install: $(TARGETS:%=debian/binutils-%-rtems$(RTEMS_VER).lintian-overrides)
 override_dh_install: $(TARGETS:%=debian/binutils-%-rtems$(RTEMS_VER).install)
 	dh_install --fail-missing
 
 debian/binutils-%-rtems$(RTEMS_VER).install: debian/binutils.install.in
-	sed -e 's|@prefix@|$(prefix)|g' -e 's|@version@|$(RTEMS_VER)|g' -e 's|@arch@|$*|g' debian/binutils.install.in > $@
+	sed -e 's|@prefix@|$(prefix)|g' -e 's|@version@|$(RTEMS_VER)|g' -e 's|@arch@|$*|g' $< > $@
+
+debian/binutils-%-rtems$(RTEMS_VER).lintian-overrides: debian/binutils.lintian-overrides.in
+	sed -e "s|@arch@|$*|g" -e 's|@prefix@|$(prefix)|g' -e 's|@version@|$(RTEMS_VER)|g' -e 's|@arch@|$*|g' $< > $@
 
 %:
 	dh --parallel $@

@@ -1,8 +1,9 @@
-binutils-rtems4.9 (2.19.1-7) unstable; urgency=low
+binutils-rtems4.9 (2.19.1-8) unstable; urgency=low
 
-  * Build for wheezy (unstable)
+  * Update to dh7 (backport fro 4.11 branch)
+  * fix some lintian errors
 
- -- Leon Flaks <flaks@bnl.gov>  Fri, 20 Mar 2015 09:58:00 -0400
+ -- Michael Davidsaver <mdavidsaver@gmail.com>  Mon, 25 Apr 2016 10:27:52 -0400
 
 binutils-rtems4.9 (2.19.1-7+zjessie+1) jessie; urgency=low
 

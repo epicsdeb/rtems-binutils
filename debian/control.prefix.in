@@ -1,7 +1,7 @@
 Source: binutils-rtems@version@
 Section: devel
 Priority: extra
-Maintainer: Michael Davidsaver <mdavidsaver@bnl.gov>
+Maintainer: Michael Davidsaver <mdavidsaver@gmail.com>
 Build-Depends: debhelper (>= 7), autotools-dev, texinfo
 Standards-Version: 3.8.0
 Homepage: http://www.gnu.org/software/binutils/

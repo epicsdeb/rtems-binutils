@@ -1,9 +1,9 @@
 Source: binutils-rtems4.9
 Section: devel
 Priority: extra
-Maintainer: Michael Davidsaver <mdavidsaver@bnl.gov>
+Maintainer: Michael Davidsaver <mdavidsaver@gmail.com>
 Build-Depends: debhelper (>= 7), autotools-dev, texinfo
-Standards-Version: 3.8.0
+Standards-Version: 3.9.6
 Homepage: http://www.gnu.org/software/binutils/
 
 Package: binutils-i386-rtems4.9

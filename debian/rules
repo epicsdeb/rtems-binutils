@@ -80,6 +80,6 @@ debian/binutils-%-rtems$(RTEMS_VER).install: debian/binutils.install.in
 # this rule is *not* part of a normal build.
 # invoke it manually ("make -f debian/rules debian/control")
 # to re-generate the control file after changing the TARGETS list
-debian/control: debian/control.prefix.in debian/control.arch.in debian/rules
+debian/control: debian/rules debian/control.prefix.in debian/control.arch.in debian/rules
 	sed -e 's|@version@|$(RTEMS_VER)|g' debian/control.prefix.in > $@
 	for arch in $(TARGETS); do sed -e 's|@version@|$(RTEMS_VER)|g' -e "s|@arch@|$$arch|g" debian/control.arch.in >> $@; done
